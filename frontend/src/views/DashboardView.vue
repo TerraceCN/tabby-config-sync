@@ -11,14 +11,16 @@
         <div class="flex items-center space-x-4">
           <div class="relative flex-1">
             <input 
-              :type="showToken ? 'text' : 'password'" 
-              :value="user.config_sync_token" 
+              type="text" 
+              :value="showToken ? user.config_sync_token : '•'.repeat(32)" 
               readonly
-              class="w-full px-4 py-2 pr-12 text-gray-700 bg-gray-100 border rounded focus:outline-none focus:bg-white"
+              autocomplete="off"
+              name="config_sync_token_display"
+              class="w-full px-4 py-2 pr-20 text-gray-700 bg-gray-100 border rounded focus:outline-none focus:bg-white font-mono"
             >
             <button 
               @click="showToken = !showToken"
-              class="absolute text-gray-500 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-700 focus:outline-none"
+              class="absolute text-gray-500 transform -translate-y-1/2 right-10 top-1/2 hover:text-gray-700 focus:outline-none"
               title="Toggle visibility"
             >
               <!-- Eye Icon -->
@@ -29,6 +31,18 @@
               <!-- Eye Off Icon -->
               <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.059 10.059 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-1.563 3.029m-5.858-.908a3 3 0 11-4.243-4.243m4.242 4.242L21 21" />
+              </svg>
+            </button>
+            <button 
+              @click="copyToken"
+              class="absolute text-gray-500 transform -translate-y-1/2 right-2 top-1/2 hover:text-gray-700 focus:outline-none"
+              title="Copy to clipboard"
+            >
+              <svg v-if="copied" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </button>
           </div>
@@ -114,10 +128,26 @@ interface User {
 const configs = ref<Config[]>([])
 const user = ref<User | null>(null)
 const showToken = ref(false)
+const copied = ref(false)
 const showRefreshConfirm = ref(false)
 const loading = ref(true)
 const error = ref('')
 const router = useRouter()
+
+const copyToken = async () => {
+  if (user.value?.config_sync_token) {
+    try {
+      await navigator.clipboard.writeText(user.value.config_sync_token)
+      copied.value = true
+      setTimeout(() => {
+        copied.value = false
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy: ', err)
+      alert('Failed to copy token')
+    }
+  }
+}
 
 const fetchUser = async () => {
   try {
