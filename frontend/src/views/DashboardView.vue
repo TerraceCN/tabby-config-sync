@@ -2,7 +2,13 @@
   <div class="container px-4 py-8 mx-auto">
     <header class="flex items-center justify-between pb-4 mb-8 border-b border-gray-200">
       <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
-      <button @click="logout" class="px-4 py-2 text-white transition-colors duration-200 bg-red-500 rounded hover:bg-red-600">Logout</button>
+      <div class="flex items-center space-x-4">
+        <button @click="openUserModal" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+          <span v-if="user" class="font-medium">{{ user.username }}</span>
+          <span v-else>Profile</span>
+        </button>
+        <button @click="logout" class="px-4 py-2 text-white transition-colors duration-200 bg-red-500 rounded hover:bg-red-600">Logout</button>
+      </div>
     </header>
     <main>
       <!-- Token Management Section -->
@@ -100,6 +106,14 @@
         </div>
       </div>
     </div>
+
+    <!-- User Profile Modal -->
+    <EditProfileModal 
+      v-if="showUserModal" 
+      :user="user" 
+      @close="showUserModal = false" 
+      @success="handlePasswordUpdateSuccess" 
+    />
   </div>
 </template>
 
@@ -107,6 +121,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '../services/api'
+import EditProfileModal from '../components/EditProfileModal.vue'
 
 interface Config {
   id: number
@@ -130,6 +145,7 @@ const user = ref<User | null>(null)
 const showToken = ref(false)
 const copied = ref(false)
 const showRefreshConfirm = ref(false)
+const showUserModal = ref(false)
 const loading = ref(true)
 const error = ref('')
 const router = useRouter()
@@ -172,6 +188,15 @@ const performRefresh = async () => {
   } catch (err: any) {
     alert('Failed to refresh token')
   }
+}
+
+const openUserModal = () => {
+  showUserModal.value = true
+}
+
+const handlePasswordUpdateSuccess = () => {
+  alert('Password updated successfully. Please login again.')
+  logout()
 }
 
 const fetchConfigs = async () => {
