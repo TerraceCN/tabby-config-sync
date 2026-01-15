@@ -1,6 +1,7 @@
 <template>
   <div class="flex min-h-screen items-center justify-center bg-gray-100">
     <div class="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
+      <img src="/logo.svg" alt="Tabby Config Sync" class="h-12 mx-auto mb-4" />
       <h2 class="mb-6 text-center text-2xl font-bold text-gray-800">Register</h2>
       <form @submit.prevent="handleRegister">
         <div class="mb-4">

@@ -1,7 +1,10 @@
 <template>
   <div class="container px-4 py-8 mx-auto">
     <header class="flex items-center justify-between pb-4 mb-8 border-b border-gray-200">
-      <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+      <div class="flex items-center space-x-3">
+        <img src="/logo.svg" alt="Tabby Config Sync" class="h-8" />
+        <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+      </div>
       <div class="flex items-center space-x-4">
         <button @click="openUserModal" class="text-gray-600 hover:text-gray-800 focus:outline-none">
           <span v-if="user" class="font-medium">{{ user.username }}</span>
