@@ -2,6 +2,7 @@
 
 from secrets import token_hex
 
+import bcrypt
 from tortoise import fields
 from tortoise.models import Model
 
@@ -40,18 +41,22 @@ class User(Model):
     def check_password_integrity(password: str):
         """Check if the password is valid."""
 
-        return len(password) >= 8
+        return (
+            len(password) >= 8
+            and any(c.isalpha() for c in password)
+            and any(c.isdigit() for c in password)
+        )
 
     @staticmethod
     def encrypt_password(password: str):
         """Encrypt the password."""
 
-        return password
+        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
     def check_password(self, password: str) -> bool:
         """Check if the password is correct."""
 
-        return self.password == self.encrypt_password(password)
+        return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
 
     @staticmethod
     def create_config_sync_token() -> str:
