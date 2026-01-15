@@ -21,7 +21,7 @@ class DatabaseSettings(BaseModel):
     url: str = "sqlite://./data/database.sqlite"
 
 
-class JWTSecretSettings(BaseModel):
+class JWTSettings(BaseModel):
     secret: str = "replace_this_with_a_strong_secret"
     algorithm: str = "HS256"
     expire_minutes: int = 30
@@ -34,7 +34,7 @@ class FrontendSettings(BaseModel):
 class Settings(BaseSettings):
     server: ServerSettings = ServerSettings()
     database: DatabaseSettings = DatabaseSettings()
-    jwt_secret: JWTSecretSettings = JWTSecretSettings()
+    jwt: JWTSettings = JWTSettings()
     frontend: FrontendSettings = FrontendSettings()
 
     model_config = SettingsConfigDict(

@@ -13,7 +13,7 @@ def create_jwt(payload: dict[str, Any], expires_minutes: int | None = None) -> s
 
     now = datetime.now(timezone.utc)
     if expires_minutes is None:
-        expires_minutes = settings.jwt_secret.expire_minutes
+        expires_minutes = settings.jwt.expire_minutes
     exp = now + timedelta(minutes=expires_minutes)
 
     to_encode = payload.copy()
@@ -23,8 +23,8 @@ def create_jwt(payload: dict[str, Any], expires_minutes: int | None = None) -> s
 
     return jwt.encode(
         to_encode,
-        settings.jwt_secret.secret,
-        algorithm=settings.jwt_secret.algorithm,
+        settings.jwt.secret,
+        algorithm=settings.jwt.algorithm,
     )
 
 
@@ -33,6 +33,6 @@ def parse_jwt(token: str) -> dict[str, Any]:
 
     return jwt.decode(
         token,
-        settings.jwt_secret.secret,
-        algorithms=[settings.jwt_secret.algorithm],
+        settings.jwt.secret,
+        algorithms=[settings.jwt.algorithm],
     )
