@@ -65,30 +65,25 @@ class UserModel(BaseModel):
         return user
 
     def model_dump_insensitive(self):
-        return self.model_dump(exclude=["password", "config_sync_token"])
+        return self.model_dump(exclude=["password"])
 
 
 class ConfigSyncTokenModel(BaseModel):
     config_sync_token: str
 
 
-@router.get("/user/", response_model=UserModel)
+@router.get("/user", response_model=UserModel)
 async def get_current_user(user: User = Depends(require_user())):
     return UserModel.from_orm(user).model_dump_insensitive()
 
 
-@router.get("/user/config_sync_token/", response_model=ConfigSyncTokenModel)
-async def get_config_sync_token(user: User = Depends(require_user("jwt"))):
-    return ConfigSyncTokenModel(config_sync_token=user.config_sync_token)
-
-
-@router.get("/user/config_sync_token/refresh/", response_model=bool)
+@router.get("/user/refresh_config_sync_token", response_model=ConfigSyncTokenModel)
 async def refresh_config_sync_token(user: User = Depends(require_user("jwt"))):
     await user.refresh_config_sync_token()
     return ConfigSyncTokenModel(config_sync_token=user.config_sync_token)
 
 
-@router.post("/users/", response_model=UserModel)
+@router.post("/users", response_model=UserModel)
 async def create_user(data: UserModel):
     try:
         user = await data.create()
@@ -100,7 +95,7 @@ async def create_user(data: UserModel):
     return UserModel.from_orm(user).model_dump_insensitive()
 
 
-@router.patch("/users/", response_model=UserModel)
+@router.patch("/users", response_model=UserModel)
 async def update_user(data: UserModel, user: User = Depends(require_user("jwt"))):
     try:
         user = await data.update(user)
