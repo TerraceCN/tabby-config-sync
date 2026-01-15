@@ -17,3 +17,6 @@ data/
 
 # Frontend build output
 web-dist/
+
+# Environment variables
+.env

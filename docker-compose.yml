@@ -1,0 +1,14 @@
+services:
+  tabby-config-sync:
+    image: ghcr.io/terracecn/tabby-config-sync
+    container_name: tabby-config-sync
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    volumes:
+      - tabby-config-sync-data:/app/data
+    environment:
+      - JWT__SECRET=${JWT__SECRET:-replace_this_with_a_strong_secret}
+
+volumes:
+  tabby-config-sync-data:
