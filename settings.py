@@ -27,10 +27,15 @@ class JWTSecretSettings(BaseModel):
     expire_minutes: int = 30
 
 
+class FrontendSettings(BaseModel):
+    dist_path: str = "web-dist"
+
+
 class Settings(BaseSettings):
     server: ServerSettings = ServerSettings()
     database: DatabaseSettings = DatabaseSettings()
     jwt_secret: JWTSecretSettings = JWTSecretSettings()
+    frontend: FrontendSettings = FrontendSettings()
 
     model_config = SettingsConfigDict(
         nested_model_default_partial_update=True,
