@@ -32,6 +32,10 @@ RUN uv export --no-dev --no-hashes --no-annotate --output-file requirements.txt
 # Stage 3: Final Image
 FROM python:3.13-slim-bookworm
 
+LABEL org.opencontainers.image.source="https://github.com/TerraceCN/tabby-config-sync"
+LABEL org.opencontainers.image.description="A simple service for syncing Tabby configurations."
+LABEL org.opencontainers.image.licenses="MIT"
+
 WORKDIR /app
 
 # Copy requirements.txt from backend-builder
