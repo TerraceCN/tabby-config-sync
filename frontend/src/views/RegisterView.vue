@@ -68,7 +68,7 @@ const handleRegister = async () => {
   }
 
   try {
-    await api.post('/1/users/', {
+    await api.post('/1/users', {
       username: username.value,
       password: password.value
     })
