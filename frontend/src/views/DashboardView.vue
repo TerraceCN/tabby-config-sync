@@ -1,38 +1,38 @@
 <template>
-  <div class="dashboard-container">
-    <header>
-      <h1>Config Management</h1>
-      <button @click="logout" class="logout-btn">Logout</button>
+  <div class="container px-4 py-8 mx-auto">
+    <header class="flex items-center justify-between pb-4 mb-8 border-b border-gray-200">
+      <h1 class="text-2xl font-bold text-gray-800">Config Management</h1>
+      <button @click="logout" class="px-4 py-2 text-white transition-colors duration-200 bg-red-500 rounded hover:bg-red-600">Logout</button>
     </header>
     <main>
-      <div v-if="loading" class="loading">Loading...</div>
-      <div v-else-if="error" class="error">{{ error }}</div>
-      <div v-else class="config-list">
-        <table>
+      <div v-if="loading" class="p-8 text-center text-gray-600">Loading...</div>
+      <div v-else-if="error" class="p-8 text-center text-red-500">{{ error }}</div>
+      <div v-else class="overflow-x-auto bg-white rounded shadow-md">
+        <table class="min-w-full table-auto">
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Created At</th>
-              <th>Modified At</th>
-              <th>Last Used Version</th>
-              <th>Actions</th>
+            <tr class="text-sm leading-normal text-gray-600 uppercase bg-gray-200">
+              <th class="px-6 py-3 text-left">ID</th>
+              <th class="px-6 py-3 text-left">Name</th>
+              <th class="px-6 py-3 text-left">Created At</th>
+              <th class="px-6 py-3 text-left">Modified At</th>
+              <th class="px-6 py-3 text-left">Last Used Version</th>
+              <th class="px-6 py-3 text-left">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="config in configs" :key="config.id">
-              <td>{{ config.id }}</td>
-              <td>{{ config.name }}</td>
-              <td>{{ formatDate(config.created_at) }}</td>
-              <td>{{ formatDate(config.modified_at) }}</td>
-              <td>{{ config.last_used_with_version || '-' }}</td>
-              <td>
-                <button @click="deleteConfig(config.id)" class="delete-btn">Delete</button>
+          <tbody class="text-sm font-light text-gray-600">
+            <tr v-for="config in configs" :key="config.id" class="border-b border-gray-200 hover:bg-gray-100">
+              <td class="px-6 py-3 text-left whitespace-nowrap">{{ config.id }}</td>
+              <td class="px-6 py-3 text-left whitespace-nowrap">{{ config.name }}</td>
+              <td class="px-6 py-3 text-left whitespace-nowrap">{{ formatDate(config.created_at) }}</td>
+              <td class="px-6 py-3 text-left whitespace-nowrap">{{ formatDate(config.modified_at) }}</td>
+              <td class="px-6 py-3 text-left whitespace-nowrap">{{ config.last_used_with_version || '-' }}</td>
+              <td class="px-6 py-3 text-left whitespace-nowrap">
+                <button @click="deleteConfig(config.id)" class="px-3 py-1 text-xs text-white transition-colors duration-200 bg-red-500 rounded hover:bg-red-600">Delete</button>
               </td>
             </tr>
           </tbody>
         </table>
-        <div v-if="configs.length === 0" class="no-data">No configurations found.</div>
+        <div v-if="configs.length === 0" class="p-8 text-center text-gray-600">No configurations found.</div>
       </div>
     </main>
   </div>
@@ -93,80 +93,3 @@ onMounted(() => {
   fetchConfigs()
 })
 </script>
-
-<style scoped>
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
-}
-
-.logout-btn {
-  padding: 0.5rem 1rem;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.logout-btn:hover {
-  background-color: #c82333;
-}
-
-.delete-btn {
-  padding: 0.25rem 0.5rem;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-th, td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-}
-
-tr:hover {
-  background-color: #f8f9fa;
-}
-
-.loading, .error, .no-data {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.1rem;
-  color: #666;
-}
-
-.error {
-  color: #dc3545;
-}
-</style>
