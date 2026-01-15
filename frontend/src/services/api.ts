@@ -24,7 +24,7 @@ api.interceptors.response.use(
       // Don't redirect if the error is from the login endpoint
       if (!error.config.url.endsWith('/token')) {
         localStorage.removeItem('token')
-        window.location.href = '/login'
+        window.location.href = '/#/login'
       }
     }
     return Promise.reject(error)
