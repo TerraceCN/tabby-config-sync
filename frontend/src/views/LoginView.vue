@@ -30,6 +30,11 @@
           Login
         </button>
         <p v-if="error" class="mt-4 text-center text-red-500 text-xs italic">{{ error }}</p>
+        <div class="mt-4 text-center">
+          <router-link to="/register" class="text-blue-500 hover:text-blue-700 text-sm">
+            Don't have an account? Register
+          </router-link>
+        </div>
       </form>
     </div>
   </div>
