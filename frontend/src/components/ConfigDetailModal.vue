@@ -69,20 +69,6 @@
               <pre class="p-3 overflow-x-auto text-sm text-green-400 bg-slate-900 rounded border border-slate-700 max-h-[45vh]"><code>{{ formattedContent }}</code></pre>
             </div>
           </div>
-
-          <!-- Raw JSON Toggle -->
-          <div>
-            <button
-              @click="showRaw = !showRaw"
-              class="flex items-center text-sm text-blue-600 hover:text-blue-800"
-            >
-              <span v-if="!showRaw">▶ Show Raw JSON</span>
-              <span v-else>▼ Hide Raw JSON</span>
-            </button>
-            <div v-if="showRaw" class="mt-2">
-              <pre class="p-3 overflow-x-auto text-sm text-green-400 bg-slate-900 rounded border border-slate-700 max-h-[25vh]">{{ configDetail?.content }}</pre>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -127,7 +113,6 @@ defineEmits<{
 const loading = ref(false)
 const error = ref('')
 const configDetail = ref<ConfigDetail | null>(null)
-const showRaw = ref(false)
 const copied = ref(false)
 
 const formattedContent = computed(() => {
@@ -184,7 +169,6 @@ const fetchConfigDetail = async () => {
 
 watch(() => props.show, (newShow) => {
   if (newShow) {
-    showRaw.value = false
     fetchConfigDetail()
   } else {
     configDetail.value = null
