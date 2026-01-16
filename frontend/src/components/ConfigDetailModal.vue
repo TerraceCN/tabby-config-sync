@@ -106,7 +106,6 @@ import api from '../services/api'
 export interface Config {
   id: number
   name: string
-  content: string
   last_used_with_version: string | null
   created_at: string
   modified_at: string | null
@@ -141,7 +140,7 @@ const formattedContent = computed(() => {
   }
 })
 
-const formatDate = (dateStr: string | null) => {
+const formatDate = (dateStr: string | null | undefined) => {
   if (!dateStr) return 'Never'
   return new Date(dateStr).toLocaleString()
 }
