@@ -52,7 +52,10 @@ class ConfigModel(BaseModel):
 @router.get("/configs", response_model=list[ConfigModel])
 async def get_configs(user: User = Depends(require_user())):
     configs: list[Config] = await user.configs.all()
-    return [ConfigModel.from_orm(config) for config in configs]
+    return [
+        ConfigModel.from_orm(config).model_dump(exclude=["content"])
+        for config in configs
+    ]
 
 
 @router.get("/configs/{config_id}", response_model=ConfigModel)

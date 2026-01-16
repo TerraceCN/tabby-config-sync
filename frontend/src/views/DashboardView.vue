@@ -25,19 +25,28 @@
       <div v-if="configsError" class="p-8 text-center text-red-500">{{ configsError }}</div>
       
       <!-- Config List Section -->
-      <ConfigList 
-        :configs="configs" 
-        :loading="configsLoading" 
-        @delete="deleteConfig" 
+      <ConfigList
+        :configs="configs"
+        :loading="configsLoading"
+        @delete="deleteConfig"
+        @view="viewConfig"
       />
     </main>
 
     <!-- User Profile Modal -->
-    <EditProfileModal 
-      v-if="showUserModal" 
-      :user="user" 
-      @close="showUserModal = false" 
-      @success="handlePasswordUpdateSuccess" 
+    <EditProfileModal
+      v-if="showUserModal"
+      :user="user"
+      @close="showUserModal = false"
+      @success="handlePasswordUpdateSuccess"
+    />
+
+    <!-- Config Detail Modal -->
+    <ConfigDetailModal
+      v-if="showConfigDetail"
+      :show="showConfigDetail"
+      :config="selectedConfig"
+      @close="showConfigDetail = false"
     />
   </div>
 </template>
@@ -49,6 +58,7 @@ import api from '../services/api'
 import EditProfileModal from '../components/EditProfileModal.vue'
 import TokenDisplay from '../components/TokenDisplay.vue'
 import ConfigList, { type Config } from '../components/ConfigList.vue'
+import ConfigDetailModal from '../components/ConfigDetailModal.vue'
 
 interface User {
   id: number
@@ -61,6 +71,8 @@ interface User {
 const configs = ref<Config[]>([])
 const user = ref<User | null>(null)
 const showUserModal = ref(false)
+const showConfigDetail = ref(false)
+const selectedConfig = ref<Config | null>(null)
 const userLoading = ref(true)
 const configsLoading = ref(true)
 const configsError = ref('')
@@ -120,6 +132,11 @@ const deleteConfig = async (id: number) => {
   } catch (err: any) {
     alert('Failed to delete config')
   }
+}
+
+const viewConfig = (config: Config) => {
+  selectedConfig.value = config
+  showConfigDetail.value = true
 }
 
 const logout = () => {

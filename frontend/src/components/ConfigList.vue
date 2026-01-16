@@ -28,6 +28,7 @@
           <td class="px-6 py-3 text-left whitespace-nowrap">{{ formatDate(config.modified_at) }}</td>
           <td class="px-6 py-3 text-left whitespace-nowrap">{{ config.last_used_with_version || '-' }}</td>
           <td class="px-6 py-3 text-left whitespace-nowrap">
+            <button @click="$emit('view', config)" class="px-3 py-1 mr-2 text-xs text-white transition-colors duration-200 bg-blue-500 rounded hover:bg-blue-600">View</button>
             <button @click="$emit('delete', config.id)" class="px-3 py-1 text-xs text-white transition-colors duration-200 bg-red-500 rounded hover:bg-red-600">Delete</button>
           </td>
         </tr>
@@ -54,6 +55,7 @@ defineProps<{
 
 defineEmits<{
   (e: 'delete', id: number): void
+  (e: 'view', config: Config): void
 }>()
 
 const formatDate = (dateStr: string | null) => {
